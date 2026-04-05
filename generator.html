@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphism Generator</title>
+<title>Neumorphism UI Generator</title>
 
 <style>
 :root{
@@ -17,19 +17,19 @@
 
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:var(--bg);
   display:flex;
 }
 
-/* 面板 */
+/* Sidebar */
 .panel{
   width:260px;
   padding:20px;
   background:#fff;
 }
 
-/* 画布 */
+/* Canvas */
 .canvas{
   flex:1;
   padding:40px;
@@ -39,7 +39,7 @@ body{
   gap:30px;
 }
 
-/* 模块 */
+/* UI Blocks */
 .module{
   width:320px;
   padding:25px;
@@ -49,7 +49,7 @@ body{
              calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* 输入 */
+/* Inputs */
 .input{
   width:100%;
   height:40px;
@@ -62,7 +62,7 @@ body{
              inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* 按钮 */
+/* Buttons */
 .btn{
   width:100%;
   height:45px;
@@ -75,13 +75,15 @@ body{
              calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
   transition:0.2s;
 }
+
 .btn:hover{transform:translateY(-2px)}
+
 .btn:active{
   box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
              inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* 卡片 */
+/* Cards */
 .card{
   padding:15px;
   margin-bottom:10px;
@@ -91,7 +93,7 @@ body{
              calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* 代码区 */
+/* Code Panel */
 .code{
   width:360px;
   background:#111;
@@ -101,7 +103,7 @@ body{
   overflow:auto;
 }
 
-/* 提示 */
+/* Empty State */
 .tip{
   text-align:center;
   opacity:0.6;
@@ -113,19 +115,22 @@ body{
 <body>
 
 <div class="panel">
-  <button class="btn" onclick="back()">← 返回首页</button>
+  <button class="btn" onclick="back()">← Back</button>
 
-  <h3>选择模块</h3>
-  <label><input type="checkbox" value="login"> 登录</label><br>
-  <label><input type="checkbox" value="register"> 注册</label><br>
-  <label><input type="checkbox" value="dashboard"> Dashboard</label><br><br>
+  <h3>Select Components</h3>
 
-  <button class="btn" onclick="generatePage()">⚡ 生成页面</button>
-  <button class="btn" onclick="copyCode()">📋 复制代码</button>
+  <label><input type="checkbox" value="login"> Login Form</label><br>
+  <label><input type="checkbox" value="register"> Register Form</label><br>
+  <label><input type="checkbox" value="dashboard"> Dashboard Cards</label><br><br>
+
+  <button class="btn" onclick="generatePage()">⚡ Generate UI</button>
+  <button class="btn" onclick="copyCode()">📋 Copy Code</button>
 
   <hr>
+
   <p style="font-size:12px;color:#888">
-    ✨ Pro version coming soon
+    ✨ Pro version coming soon<br>
+    (More components • Tailwind • React)
   </p>
 </div>
 
@@ -135,17 +140,18 @@ body{
 <script>
 const canvas = document.getElementById('canvas');
 
-/* 初始化提示 */
+/* Initial state */
 window.onload = function(){
   canvas.innerHTML = `
     <div class="tip">
       <h2>🎨 Neumorphism UI Generator</h2>
-      <p>选择模块 → 点击生成页面 → 一键复制</p>
+      <p>Select components → Generate → Copy & Use</p>
     </div>
   `;
 }
 
-/* 模块 */
+/* Components */
+
 function login(){
 return `<div class="module">
 <h2>Login</h2>
@@ -157,7 +163,7 @@ return `<div class="module">
 
 function register(){
 return `<div class="module">
-<h2>Register</h2>
+<h2>Create Account</h2>
 <input class="input" placeholder="Username" />
 <input class="input" placeholder="Email" />
 <input class="input" placeholder="Password" type="password" />
@@ -168,18 +174,18 @@ return `<div class="module">
 
 function dashboard(){
 return `<div class="module">
-<div class="card"><b>Users</b><br>1200</div>
-<div class="card"><b>Revenue</b><br>$8200</div>
+<div class="card"><b>Users</b><br>1,200</div>
+<div class="card"><b>Revenue</b><br>$8,200</div>
 </div>`;
 }
 
-/* 生成 */
+/* Generate */
 function generatePage(){
   let selected = document.querySelectorAll('input[type=checkbox]:checked');
   let html='';
 
   if(selected.length===0){
-    canvas.innerHTML = `<div class="tip"><p>⚠️ 请先选择模块</p></div>`;
+    canvas.innerHTML = `<div class="tip"><p>⚠️ Please select at least one component</p></div>`;
     return;
   }
 
@@ -194,17 +200,18 @@ function generatePage(){
   document.getElementById('code').innerText = html;
 }
 
-/* 复制 */
+/* Copy */
 function copyCode(){
   navigator.clipboard.writeText(document.getElementById('code').innerText);
 
   const msg=document.createElement('div');
-  msg.innerText='✅ 已复制代码';
+  msg.innerText='✅ Copied!';
   msg.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;';
   document.body.appendChild(msg);
   setTimeout(()=>msg.remove(),1500);
 }
 
+/* Back */
 function back(){
   window.location.href="./index.html";
 }
