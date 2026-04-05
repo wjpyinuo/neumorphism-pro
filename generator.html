@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphism Pro Generator</title>
+
+<title>Neumorphism Generator – UI Builder</title>
+<meta name="description" content="Generate neumorphism UI components with real-time preview.">
 
 <style>
 :root{
@@ -11,9 +12,7 @@
   --light:#ffffff;
   --dark:#a3b1c6;
   --text:#333;
-  --panel-bg:#ffffff;
-  --panel-text:#333;
-  --accent:#6c8cff;
+  --panel:#f4f6fb;
 
   --radius:18px;
   --distance:10px;
@@ -22,81 +21,122 @@
 
 body{
   margin:0;
-  font-family:Arial;
+  display:flex;
+  font-family:Inter,Arial;
   background:var(--bg);
   color:var(--text);
-  display:flex;
-  transition:.3s;
 }
 
-/* sidebar */
+/* 🌙 Dark */
+body.dark{
+  --bg:#1e1e2f;
+  --text:#fff;
+  --panel:#2a2a3d;
+  --light:#2f2f45;
+  --dark:#12121a;
+}
+
+/* 拟态 */
+.neu{
+  border-radius:var(--radius);
+  background:var(--bg);
+  box-shadow:
+    var(--distance) var(--distance) var(--blur) var(--dark),
+    calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* 按钮 */
+.neu-btn{
+  height:46px;
+  border:none;
+  cursor:pointer;
+  transition:.2s;
+  font-weight:500;
+}
+.neu-btn:hover{transform:translateY(-2px);}
+.neu-btn:active{
+  box-shadow:
+    inset var(--distance) var(--distance) var(--blur) var(--dark),
+    inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* Sidebar */
 .panel{
-  width:300px;
+  width:320px;
   padding:20px;
-  background:var(--panel-bg);
-  color:var(--panel-text);
-  transition:.3s;
+  background:var(--panel);
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 }
 
-/* fix text visibility */
-.panel label,
-.panel h3,
-.panel h4{
-  color:var(--panel-text);
+.group{
+  padding:15px;
 }
 
+.group-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+}
+
+/* Canvas */
 .canvas{
   flex:1;
-  padding:40px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:25px;
-  justify-content:center;
+  padding:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:24px;
+}
+
+/* 修复 dark 文字 */
+.canvas,.canvas *{
+  color:var(--text);
 }
 
 .module{
-  width:300px;
   padding:20px;
-  border-radius:var(--radius);
-  background:var(--bg);
-  color:var(--text);
-  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
-             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .input{
-  width:100%;
-  height:40px;
-  margin-bottom:10px;
+  height:36px;
   border:none;
-  border-radius:var(--radius);
+  margin-top:10px;
   padding:0 10px;
-  background:var(--bg);
-  color:var(--text);
-  box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
-             inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-.btn{
-  width:100%;
-  height:45px;
-  border:none;
-  border-radius:var(--radius);
-  background:var(--bg);
-  color:var(--text);
-  margin-bottom:10px;
-  cursor:pointer;
-  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
-             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+/* Toast */
+.toast-wrap{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
-
-.code{
-  width:380px;
-  background:#111;
-  color:#0f0;
-  padding:10px;
-  font-size:12px;
-  overflow:auto;
+.toast{
+  padding:12px 18px;
+  background:#333;
+  color:#fff;
+  border-radius:10px;
+  animation:fade .3s;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 </style>
 </head>
@@ -105,225 +145,104 @@ body{
 
 <div class="panel">
 
-<button class="btn" onclick="back()">← Back</button>
+<button class="neu neu-btn" onclick="back()">← Back</button>
 
-<h3>🧩 Form</h3>
-<label><input type="checkbox" value="login"> Login</label><br>
-<label><input type="checkbox" value="register"> Register</label><br>
-<label><input type="checkbox" value="search"> Search Bar</label><br>
+<div class="group neu">
+<div class="group-title">🧩 Form</div>
+<label class="option"><input type="checkbox" value="login"> Login</label>
+<label class="option"><input type="checkbox" value="register"> Register</label>
+<label class="option"><input type="checkbox" value="search"> Search</label>
+</div>
 
-<h3>📐 Layout</h3>
-<label><input type="checkbox" value="navbar"> Navbar</label><br>
-<label><input type="checkbox" value="sidebar"> Sidebar</label><br>
+<div class="group neu">
+<div class="group-title">📐 Layout</div>
+<label class="option"><input type="checkbox" value="navbar"> Navbar</label>
+<label class="option"><input type="checkbox" value="sidebar"> Sidebar</label>
+</div>
 
-<h3>💰 Business</h3>
-<label><input type="checkbox" value="pricing"> Pricing Card</label><br>
-<label><input type="checkbox" value="card"> Info Card</label><br>
+<div class="group neu">
+<div class="group-title">💰 Business</div>
+<label class="option"><input type="checkbox" value="pricing"> Pricing</label>
+<label class="option"><input type="checkbox" value="card"> Card</label>
+</div>
 
-<h3>💬 Feedback</h3>
-<label><input type="checkbox" value="modal"> Modal</label><br>
-<label><input type="checkbox" value="toast"> Toast</label><br>
+<div class="group neu">
+<div class="group-title">💬 Feedback</div>
+<label class="option"><input type="checkbox" value="modal"> Modal</label>
+<label class="option"><input type="checkbox" value="toast"> Toast</label>
+</div>
 
-<hr>
+<div class="group neu">
+<div class="group-title">🎛 Style</div>
+Radius <input type="range" min="5" max="40" value="18" oninput="setVar('--radius',this.value+'px')"><br>
+Distance <input type="range" min="5" max="25" value="10" oninput="setVar('--distance',this.value+'px')"><br>
+Blur <input type="range" min="5" max="40" value="20" oninput="setVar('--blur',this.value+'px')">
+</div>
 
-<h3>🎛 Style</h3>
-Radius <input type="range" min="5" max="40" value="18" onchange="setVar('--radius',this.value+'px')"><br>
-Distance <input type="range" min="5" max="25" value="10" onchange="setVar('--distance',this.value+'px')"><br>
-Blur <input type="range" min="5" max="40" value="20" onchange="setVar('--blur',this.value+'px')"><br>
+<div class="group neu">
+<div class="group-title">🎨 Theme</div>
+<button class="neu neu-btn" onclick="setTheme('light')">Light</button>
+<button class="neu neu-btn" onclick="setTheme('dark')">Dark</button>
+</div>
 
-<hr>
-
-<h3>🎨 Theme</h3>
-<button class="btn" onclick="setTheme('light')">Light</button>
-<button class="btn" onclick="setTheme('dark')">Dark</button>
-
-<hr>
-
-<h4>✨ Pro Themes</h4>
-<button class="btn" onclick="pro()">Blue</button>
-<button class="btn" onclick="pro()">Purple</button>
-<button class="btn" onclick="pro()">Neon</button>
-
-<hr>
-
-<button class="btn" onclick="generate()">⚡ Generate UI</button>
-<button class="btn" onclick="copy()">📋 Copy HTML</button>
-
-<p style="font-size:12px;color:#888">
-✨ Pro: React export / Tailwind / 50+ components
-</p>
+<div class="group neu">
+<button class="neu neu-btn" onclick="generate()">⚡ Generate UI</button>
+<button class="neu neu-btn" onclick="copy()">📋 Copy HTML</button>
+</div>
 
 </div>
 
 <div class="canvas" id="canvas"></div>
-<div class="code"><pre id="code"></pre></div>
+<div class="toast-wrap" id="toastWrap"></div>
 
 <script>
-
-/* ===== Theme System ===== */
-
-function setTheme(type){
-
-  const root = document.documentElement;
-
-  const themes = {
-
-    light:{
-      bg:"#e0e5ec",
-      text:"#333",
-      light:"#ffffff",
-      dark:"#a3b1c6",
-      panel:"#ffffff",
-      panelText:"#333",
-      accent:"#6c8cff"
-    },
-
-    dark:{
-      bg:"#1e1e2f",
-      text:"#f1f1f1",
-      light:"#2a2a3d",
-      dark:"#12121a",
-      panel:"#252536",
-      panelText:"#f1f1f1",
-      accent:"#8899ff"
-    }
-
-  };
-
-  const t = themes[type];
-  if(!t) return;
-
-  root.style.setProperty('--bg', t.bg);
-  root.style.setProperty('--text', t.text);
-  root.style.setProperty('--light', t.light);
-  root.style.setProperty('--dark', t.dark);
-  root.style.setProperty('--panel-bg', t.panel);
-  root.style.setProperty('--panel-text', t.panelText);
-  root.style.setProperty('--accent', t.accent);
-
-  localStorage.setItem("theme", type);
-}
-
-window.onload = function(){
-  const saved = localStorage.getItem("theme") || "light";
-  setTheme(saved);
+const C={
+login:()=>`<div class="module neu"><h3>Login</h3><input class="input neu"><input class="input neu"><button class="neu neu-btn" data-a="login">Login</button></div>`,
+register:()=>`<div class="module neu"><h3>Register</h3><input class="input neu"><input class="input neu"><button class="neu neu-btn" data-a="register">Register</button></div>`,
+search:()=>`<div class="module neu"><input class="input neu"><button class="neu neu-btn" data-a="search">Search</button></div>`,
+navbar:()=>`<div class="module neu">Navbar</div>`,
+sidebar:()=>`<div class="module neu">Sidebar</div>`,
+pricing:()=>`<div class="module neu"><h3>$9</h3><button class="neu neu-btn">Buy</button></div>`,
+card:()=>`<div class="module neu">Card</div>`,
+modal:()=>`<div class="module neu"><button class="neu neu-btn" data-a="modal">Open Modal</button></div>`,
+toast:()=>`<div class="module neu"><button class="neu neu-btn" data-a="toast">Toast</button></div>`
 };
 
-/* ===== Pro lock ===== */
-
-function pro(){
-  alert("✨ Pro feature\nUnlock premium themes");
-}
-
-/* ===== Style ===== */
-
-function setVar(k,v){
-  document.documentElement.style.setProperty(k,v);
-}
-
-/* ===== Components ===== */
-
-function login(){
-return `<div class="module">
-<h2>Login</h2>
-<input class="input" placeholder="Email">
-<input class="input" placeholder="Password">
-<button class="btn">Login</button>
-</div>`;
-}
-
-function register(){
-return `<div class="module">
-<h2>Register</h2>
-<input class="input" placeholder="Email">
-<input class="input" placeholder="Password">
-<button class="btn">Sign Up</button>
-</div>`;
-}
-
-function search(){
-return `<div class="module">
-<input class="input" placeholder="Search...">
-</div>`;
-}
-
-function navbar(){
-return `<div class="module">Navbar</div>`;
-}
-
-function sidebar(){
-return `<div class="module">Sidebar</div>`;
-}
-
-function pricing(){
-return `<div class="module">
-<h3>$9/mo</h3>
-<button class="btn">Buy Now</button>
-</div>`;
-}
-
-function card(){
-return `<div class="module">Info Card</div>`;
-}
-
-function modal(){
-return `<div class="module">Modal Example</div>`;
-}
-
-function toast(){
-return `<div class="module">Toast Message</div>`;
-}
-
-/* ===== Generate ===== */
-
-const canvas = document.getElementById('canvas');
-
 function generate(){
-  let selected=document.querySelectorAll('input:checked');
-  let html='';
-
   canvas.innerHTML='';
-
-  selected.forEach(i=>{
-    let fn=window[i.value];
-    if(fn){
-      let block=fn();
-      canvas.innerHTML+=block;
-      html+=block;
-    }
+  document.querySelectorAll("input:checked").forEach(i=>{
+    const d=document.createElement("div");
+    d.innerHTML=C[i.value]();
+    canvas.appendChild(d.firstElementChild);
   });
-
-  output(html);
 }
 
-function output(inner){
-const full = `
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Generated UI</title>
-<style>
-body{background:var(--bg);font-family:Arial;display:flex;flex-wrap:wrap;gap:20px;padding:40px;}
-</style>
-</head>
-<body>
-${inner}
-</body>
-</html>
-`;
-document.getElementById('code').innerText = full;
+function setVar(k,v){document.documentElement.style.setProperty(k,v);}
+function setTheme(t){document.body.className=t==='dark'?'dark':'';}
+
+function toast(msg){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerText=msg;
+  toastWrap.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
 }
 
 function copy(){
-  navigator.clipboard.writeText(document.getElementById('code').innerText);
-  alert('Copied!');
+  navigator.clipboard.writeText(canvas.innerHTML);
+  toast("Copied successfully");
 }
 
-function back(){
-  window.location.href='./index.html';
-}
+document.addEventListener("click",e=>{
+  const a=e.target.dataset.a;
+  if(!a)return;
+  if(a==="login") toast("Login success");
+  if(a==="register") toast("Register success");
+  if(a==="search") toast("Searching...");
+  if(a==="toast") toast("Hello 👋");
+});
 
+function back(){location.href="index.html";}
 </script>
 
 </body>
