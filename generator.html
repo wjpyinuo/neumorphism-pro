@@ -2,294 +2,2001 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Neumorphism Pro Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuPro Generator — Neumorphism UI Builder</title>
+<meta name="description" content="Free online neumorphism UI generator. Design, preview and export soft UI components as HTML, React or Tailwind CSS. 6 themes, 15+ components.">
+<meta name="keywords" content="neumorphism generator, soft UI builder, CSS neumorphism, neumorphic design tool, UI component generator">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://neumorphism-pro-git-main-yinuo.vercel.app/generator">
+
+<!-- Open Graph -->
+<meta property="og:title" content="NeuPro — Neumorphism UI Generator">
+<meta property="og:description" content="Design, preview and export soft UI components instantly. 15+ components, 6 themes, 3 export formats.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://neumorphism-pro-git-main-yinuo.vercel.app/generator">
+<meta property="og:image" content="https://neumorphism-pro-git-main-yinuo.vercel.app/og-generator.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NeuPro — Neumorphism UI Generator">
+<meta name="twitter:description" content="Design, preview and export soft UI components instantly.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
 
 <style>
-:root{
-  --bg:#e0e5ec;
-  --light:#ffffff;
-  --dark:#a3b1c6;
-  --text:#333;
-  --panel:#f4f6fb;
-
-  --radius:18px;
-  --distance:10px;
-  --blur:20px;
-
-  --primary:#4f46e5;
+/* ═══════════════════════════════════════
+   TOKENS
+   ═══════════════════════════════════════ */
+:root {
+  --bg: #e0e5ec;
+  --bg-alt: #d5dae1;
+  --light: #ffffff;
+  --dark: #a3b1c6;
+  --text: #2d3748;
+  --text-muted: #718096;
+  --panel: #e8ecf1;
+  --radius: 18px;
+  --distance: 10px;
+  --blur: 20px;
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --accent: #06b6d4;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body{
-  margin:0;
-  display:flex;
-  font-family:Inter,Arial;
-  background:var(--bg);
-  color:var(--text);
+/* ═══ DARK ═══ */
+body.dark {
+  --bg: #1a1a2e;
+  --bg-alt: #16162a;
+  --light: #252545;
+  --dark: #0f0f1a;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --panel: #222240;
 }
 
-/* 🌙 Dark */
-body.dark{
-  --bg:#1e1e2f;
-  --text:#fff;
-  --panel:#2a2a3d;
-  --light:#2f2f45;
-  --dark:#12121a;
+/* ═══ RESET ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  transition: background var(--transition), color var(--transition);
 }
 
-/* ===== 拟态 ===== */
-.neu{
-  border-radius:var(--radius);
-  background:var(--bg);
+/* ═══ NEU CORE ═══ */
+.neu {
+  border-radius: var(--radius);
+  background: var(--bg);
   box-shadow:
     var(--distance) var(--distance) var(--blur) var(--dark),
     calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+  transition: box-shadow var(--transition), transform var(--transition), background var(--transition);
 }
 
-/* 按钮 */
-.neu-btn{
-  height:46px;
-  border:none;
-  cursor:pointer;
-  transition:.2s;
-  font-weight:500;
-}
-.neu-btn:hover{transform:translateY(-2px);}
-.neu-btn:active{
+.neu-inset {
+  border-radius: var(--radius);
+  background: var(--bg);
   box-shadow:
     inset var(--distance) var(--distance) var(--blur) var(--dark),
     inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* Sidebar */
-.panel{
-  width:320px;
-  padding:20px;
-  background:var(--panel);
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  overflow:auto;
-}
-
-.group{
-  padding:15px;
-}
-
-.group-title{
-  font-weight:600;
-  margin-bottom:10px;
-}
-
-.option{
-  display:flex;
-  gap:10px;
-  padding:6px 0;
-}
-
-/* Canvas */
-.canvas{
-  flex:1;
-  padding:30px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:24px;
-}
-
-/* 修复 dark */
-.canvas,.canvas *{
-  color:var(--text);
-}
-
-/* 模块 */
-.module{
-  padding:20px;
-  min-height:160px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:10px;
-
-  transition:.3s;
-}
-
-/* Hover Demo */
-.module:hover{
-  transform:scale(1.03);
-}
-
-/* input true neu */
-.input{
-  height:36px;
-  border:none;
-  padding:0 10px;
-  background:var(--bg);
-  border-radius:var(--radius);
+.neu-flat {
+  border-radius: var(--radius);
+  background: var(--bg);
   box-shadow:
-    inset 6px 6px 10px var(--dark),
-    inset -6px -6px 10px var(--light);
+    calc(var(--distance)*0.5) calc(var(--distance)*0.5) calc(var(--blur)*0.5) var(--dark),
+    calc(-1*var(--distance)*0.5) calc(-1*var(--distance)*0.5) calc(var(--blur)*0.5) var(--light);
 }
 
-/* Toast */
-.toast-wrap{
-  position:fixed;
-  bottom:20px;
-  right:20px;
+.neu-btn {
+  height: 44px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 0 18px;
+  box-shadow:
+    var(--distance) var(--distance) var(--blur) var(--dark),
+    calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+  transition: all var(--transition);
+  white-space: nowrap;
 }
-.toast{
-  padding:12px 18px;
-  background:#333;
-  color:#fff;
-  border-radius:10px;
-  margin-top:10px;
-  animation:fade .3s;
+
+.neu-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    calc(var(--distance)*1.3) calc(var(--distance)*1.3) calc(var(--blur)*1.2) var(--dark),
+    calc(-1*var(--distance)*1.3) calc(-1*var(--distance)*1.3) calc(var(--blur)*1.2) var(--light);
 }
-@keyframes fade{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
+
+.neu-btn:active, .neu-btn.active {
+  transform: translateY(0);
+  box-shadow:
+    inset var(--distance) var(--distance) var(--blur) var(--dark),
+    inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+.neu-btn.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow:
+    var(--distance) var(--distance) var(--blur) var(--dark),
+    calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light),
+    0 4px 12px rgba(99,102,241,0.3);
+}
+
+.neu-btn.primary:hover {
+  box-shadow:
+    calc(var(--distance)*1.3) calc(var(--distance)*1.3) calc(var(--blur)*1.2) var(--dark),
+    calc(-1*var(--distance)*1.3) calc(-1*var(--distance)*1.3) calc(var(--blur)*1.2) var(--light),
+    0 6px 18px rgba(99,102,241,0.4);
+}
+
+.neu-btn.primary:active {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  box-shadow:
+    inset var(--distance) var(--distance) var(--blur) var(--dark),
+    inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+.neu-btn.sm { height: 36px; padding: 0 14px; font-size: 12px; }
+.neu-btn.danger { color: var(--danger); }
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  width: 320px;
+  min-width: 320px;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--panel);
+  border-right: 1px solid var(--dark);
+  transition: background var(--transition);
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--dark);
+}
+
+.sidebar-scroll {
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--dark); border-radius: 4px; }
+
+.sidebar-footer {
+  padding: 14px 16px;
+  border-top: 1px solid var(--dark);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel);
+}
+
+/* Sidebar header */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow:
+    3px 3px 6px var(--dark),
+    -3px -3px 6px var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all var(--transition);
+}
+
+.icon-btn:active {
+  box-shadow:
+    inset 3px 3px 6px var(--dark),
+    inset -3px -3px 6px var(--light);
+}
+
+/* Groups */
+.group {
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow:
+    6px 6px 12px var(--dark),
+    -6px -6px 12px var(--light);
+}
+
+.group-title {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition);
+  user-select: none;
+}
+
+.option:hover { color: var(--primary); }
+
+.option input[type="checkbox"] {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--bg);
+  box-shadow:
+    inset 3px 3px 5px var(--dark),
+    inset -3px -3px 5px var(--light);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.option input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow:
+    2px 2px 4px var(--dark),
+    -2px -2px 4px var(--light);
+}
+
+.option input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Range sliders */
+.slider-group { margin: 6px 0; }
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.slider-label span:last-child {
+  color: var(--primary);
+  font-weight: 700;
+  font-family: var(--mono);
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  background: var(--bg);
+  border-radius: 3px;
+  box-shadow:
+    inset 2px 2px 4px var(--dark),
+    inset -2px -2px 4px var(--light);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 2px 6px rgba(99,102,241,0.4);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Color inputs */
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    3px 3px 6px var(--dark),
+    -3px -3px 6px var(--light);
+  padding: 0;
+  overflow: hidden;
+}
+
+.color-swatch::-webkit-color-swatch-wrapper { padding: 0; }
+.color-swatch::-webkit-color-swatch { border: none; border-radius: 10px; }
+
+.color-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Theme grid */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.theme-btn {
+  padding: 10px 4px;
+  border: none;
+  cursor: pointer;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow:
+    4px 4px 8px var(--dark),
+    -4px -4px 8px var(--light);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.theme-btn:hover { transform: translateY(-2px); }
+
+.theme-btn:active, .theme-btn.active {
+  box-shadow:
+    inset 4px 4px 8px var(--dark),
+    inset -4px -4px 8px var(--light);
+}
+
+.theme-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Export grid */
+.export-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* ═══ MAIN CANVAS ═══ */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Toolbar */
+.toolbar {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--dark);
+  background: var(--bg);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-toggle {
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    inset 3px 3px 6px var(--dark),
+    inset -3px -3px 6px var(--light);
+}
+
+.view-btn {
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.view-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.component-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.component-count strong {
+  color: var(--primary);
+  font-family: var(--mono);
+}
+
+/* Canvas area */
+.canvas-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  transition: background var(--transition);
+}
+
+.canvas-area::-webkit-scrollbar { width: 6px; }
+.canvas-area::-webkit-scrollbar-track { background: transparent; }
+.canvas-area::-webkit-scrollbar-thumb { background: var(--dark); border-radius: 3px; }
+
+.canvas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.canvas.mobile {
+  grid-template-columns: 1fr;
+  max-width: 400px;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 64px;
+  opacity: 0.3;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.empty-state h3 { font-size: 20px; font-weight: 600; }
+.empty-state p { font-size: 14px; }
+
+/* ═══ MODULES ═══ */
+.module {
+  padding: 24px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  animation: moduleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes moduleIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.module:hover { transform: scale(1.02); }
+
+.module .module-label {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* Neu input */
+.neu-input {
+  height: 42px;
+  border: none;
+  padding: 0 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 5px 5px 10px var(--dark),
+    inset -5px -5px 10px var(--light);
+  outline: none;
+  transition: box-shadow var(--transition);
+  width: 100%;
+}
+
+.neu-input:focus {
+  box-shadow:
+    inset 5px 5px 10px var(--dark),
+    inset -5px -5px 10px var(--light),
+    0 0 0 2px var(--primary);
+}
+
+.neu-input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+/* Neu textarea */
+.neu-textarea {
+  border: none;
+  padding: 12px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 5px 5px 10px var(--dark),
+    inset -5px -5px 10px var(--light);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  width: 100%;
+  transition: box-shadow var(--transition);
+}
+
+.neu-textarea:focus {
+  box-shadow:
+    inset 5px 5px 10px var(--dark),
+    inset -5px -5px 10px var(--light),
+    0 0 0 2px var(--primary);
+}
+
+/* Toggle switch */
+.neu-toggle {
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow:
+    inset 3px 3px 6px var(--dark),
+    inset -3px -3px 6px var(--light);
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.neu-toggle::after {
+  content: '';
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow:
+    2px 2px 4px var(--dark),
+    -2px -2px 4px var(--light);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all var(--transition);
+}
+
+.neu-toggle.on::after {
+  left: 27px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+/* Progress bar */
+.neu-progress {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--bg);
+  box-shadow:
+    inset 3px 3px 5px var(--dark),
+    inset -3px -3px 5px var(--light);
+  overflow: hidden;
+}
+
+.neu-progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.6s ease;
+}
+
+/* Avatar */
+.neu-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Badge */
+.neu-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ═══ CODE MODAL ═══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-overlay.show { display: flex; }
+
+.modal {
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-code {
+  flex: 1;
+  overflow: auto;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow:
+    inset 4px 4px 8px var(--dark),
+    inset -4px -4px 8px var(--light);
+  padding: 20px;
+}
+
+.modal-code pre {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ═══ TOAST ═══ */
+.toast-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.toast.success { background: linear-gradient(135deg, #10b981, #059669); }
+.toast.info { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+.toast.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .sidebar { width: 260px; min-width: 260px; }
+}
+
+@media (max-width: 640px) {
+  body { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    min-width: unset;
+    height: auto;
+    max-height: 50vh;
+    border-right: none;
+    border-bottom: 1px solid var(--dark);
+  }
+  .sidebar-scroll { max-height: 30vh; }
+  .toolbar-left { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .toolbar-left > div:last-child { margin-left: 0 !important; }
+  .canvas { grid-template-columns: 1fr; }
+}
+
+/* ═══ TIP FLOATING BUTTON ═══ */
+.tip-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--bg);
+  box-shadow:
+    6px 6px 14px var(--dark),
+    -6px -6px 14px var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: tipBounce 2s ease-in-out infinite;
+}
+
+.tip-float:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow:
+    8px 8px 18px var(--dark),
+    -8px -8px 18px var(--light),
+    0 4px 12px rgba(99,102,241,0.25);
+}
+
+.tip-float:active {
+  transform: scale(0.95);
+  box-shadow:
+    inset 4px 4px 8px var(--dark),
+    inset -4px -4px 8px var(--light);
+}
+
+.tip-float .tip-label {
+  position: absolute;
+  right: 62px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg);
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow:
+    4px 4px 8px var(--dark),
+    -4px -4px 8px var(--light);
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.25s;
+  pointer-events: none;
+}
+
+.tip-float:hover .tip-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes tipBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.tip-float:hover { animation: none; }
+
+/* ═══ TIP MODAL ═══ */
+.tip-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.tip-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.tip-card {
+  background: var(--bg);
+  border-radius: 24px;
+  padding: 36px;
+  width: 360px;
+  max-width: 90vw;
+  box-shadow:
+    12px 12px 24px var(--dark),
+    -12px -12px 24px var(--light);
+  text-align: center;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tip-overlay.show .tip-card {
+  transform: scale(1) translateY(0);
+}
+
+.tip-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.tip-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.tip-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tip-amount-btn {
+  padding: 14px 8px;
+  border: none;
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow:
+    5px 5px 10px var(--dark),
+    -5px -5px 10px var(--light);
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tip-amount-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    7px 7px 14px var(--dark),
+    -7px -7px 14px var(--light);
+}
+
+.tip-amount-btn:active {
+  box-shadow:
+    inset 4px 4px 8px var(--dark),
+    inset -4px -4px 8px var(--light);
+}
+
+.tip-platform {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tip-platform a {
+  flex: 1;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow:
+    5px 5px 10px var(--dark),
+    -5px -5px 10px var(--light);
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tip-platform a:hover {
+  transform: translateY(-2px);
+  color: var(--primary);
+}
+
+.tip-close {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.tip-close:hover { color: var(--text); }
+
+@media (max-width: 768px) {
+  .tip-float { bottom: 20px; right: 20px; width: 46px; height: 46px; font-size: 18px; }
+  .tip-float .tip-label { display: none; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
-<div class="panel">
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
 
-<button class="neu neu-btn" onclick="back()">← Back</button>
+  <!-- Fixed Header -->
+  <div class="sidebar-header">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="logo">
+        <div class="logo-icon">◆</div>
+        <span>NeuPro</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="toggleDark()" title="Toggle theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="icon-btn" onclick="location.href='index.html'" title="Back to home">←</button>
+      </div>
+    </div>
+  </div>
 
-<!-- 分类（完整保留） -->
-<div class="group neu">
-<div class="group-title">🧩 Form</div>
-<label class="option"><input type="checkbox" value="login"> Login</label>
-<label class="option"><input type="checkbox" value="register"> Register</label>
-<label class="option"><input type="checkbox" value="search"> Search</label>
+  <!-- Scrollable Middle -->
+  <div class="sidebar-scroll" id="sidebarScroll">
+
+  <!-- 🧩 Forms -->
+  <div class="group">
+    <div class="group-title">🧩 Forms</div>
+    <label class="option"><input type="checkbox" value="login" onchange="generate()"> Login Form</label>
+    <label class="option"><input type="checkbox" value="register" onchange="generate()"> Register Form</label>
+    <label class="option"><input type="checkbox" value="search" onchange="generate()"> Search Bar</label>
+    <label class="option"><input type="checkbox" value="contact" onchange="generate()"> Contact Form</label>
+    <label class="option"><input type="checkbox" value="newsletter" onchange="generate()"> Newsletter</label>
+  </div>
+
+  <!-- 📐 Layout -->
+  <div class="group">
+    <div class="group-title">📐 Layout</div>
+    <label class="option"><input type="checkbox" value="navbar" onchange="generate()"> Navbar</label>
+    <label class="option"><input type="checkbox" value="sidebar_comp" onchange="generate()"> Sidebar Panel</label>
+    <label class="option"><input type="checkbox" value="footer" onchange="generate()"> Footer</label>
+  </div>
+
+  <!-- 💰 Business -->
+  <div class="group">
+    <div class="group-title">💰 Business</div>
+    <label class="option"><input type="checkbox" value="pricing" onchange="generate()"> Pricing Card</label>
+    <label class="option"><input type="checkbox" value="card" onchange="generate()"> Feature Card</label>
+    <label class="option"><input type="checkbox" value="stats" onchange="generate()"> Stats Panel</label>
+    <label class="option"><input type="checkbox" value="profile" onchange="generate()"> Profile Card</label>
+  </div>
+
+  <!-- 💬 Feedback -->
+  <div class="group">
+    <div class="group-title">💬 Feedback</div>
+    <label class="option"><input type="checkbox" value="modal" onchange="generate()"> Modal</label>
+    <label class="option"><input type="checkbox" value="toast_comp" onchange="generate()"> Toast</label>
+    <label class="option"><input type="checkbox" value="alert" onchange="generate()"> Alert Box</label>
+  </div>
+
+  <!-- 🎚️ Controls -->
+  <div class="group">
+    <div class="group-title">🎛️ Controls</div>
+    <label class="option"><input type="checkbox" value="toggle_comp" onchange="generate()"> Toggle Switch</label>
+    <label class="option"><input type="checkbox" value="slider_comp" onchange="generate()"> Slider</label>
+    <label class="option"><input type="checkbox" value="progress" onchange="generate()"> Progress Bar</label>
+    <label class="option"><input type="checkbox" value="buttons" onchange="generate()"> Button Set</label>
+    <label class="option"><input type="checkbox" value="tabs_comp" onchange="generate()"> Tabs</label>
+  </div>
+
+  <!-- 🎨 Style -->
+  <div class="group">
+    <div class="group-title">🎨 Style</div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Radius</span><span id="radiusVal">18px</span></div>
+      <input type="range" min="5" max="40" value="18" oninput="setVar('--radius',this.value+'px'); $('radiusVal').textContent=this.value+'px'">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Distance</span><span id="distVal">10px</span></div>
+      <input type="range" min="3" max="25" value="10" oninput="setVar('--distance',this.value+'px'); $('distVal').textContent=this.value+'px'">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Blur</span><span id="blurVal">20px</span></div>
+      <input type="range" min="5" max="50" value="20" oninput="setVar('--blur',this.value+'px'); $('blurVal').textContent=this.value+'px'">
+    </div>
+    <div class="color-row">
+      <input type="color" class="color-swatch" value="#6366f1" oninput="setVar('--primary',this.value)">
+      <span class="color-label">Primary</span>
+    </div>
+    <div class="color-row">
+      <input type="color" class="color-swatch" value="#06b6d4" oninput="setVar('--accent',this.value)">
+      <span class="color-label">Accent</span>
+    </div>
+  </div>
+
+  <!-- 🌈 Themes -->
+  <div class="group">
+    <div class="group-title">🌈 Themes</div>
+    <div class="theme-grid">
+      <button class="theme-btn active" onclick="applyTheme('light', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#e0e5ec,#fff)"></div>
+        Light
+      </button>
+      <button class="theme-btn" onclick="applyTheme('dark', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#1a1a2e,#0f0f1a)"></div>
+        Dark
+      </button>
+      <button class="theme-btn" onclick="applyTheme('ocean', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#dbeafe,#93c5fd)"></div>
+        Ocean
+      </button>
+      <button class="theme-btn" onclick="applyTheme('lavender', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#ede9fe,#c4b5fd)"></div>
+        Lavender
+      </button>
+      <button class="theme-btn" onclick="applyTheme('neon', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#0f172a,#06b6d4)"></div>
+        Neon
+      </button>
+      <button class="theme-btn" onclick="applyTheme('rose', this)">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#fce7f3,#f9a8d4)"></div>
+        Rose
+      </button>
+    </div>
+  </div>
+
+  <!-- ⚡ Export -->
+  <div class="group">
+    <div class="group-title">⚡ Export</div>
+    <div class="export-grid">
+      <button class="theme-btn" onclick="setExport('html')" id="exp-html">
+        <span style="font-size:18px">📄</span> HTML
+      </button>
+      <button class="theme-btn" onclick="setExport('react')" id="exp-react">
+        <span style="font-size:18px">⚛️</span> React
+      </button>
+      <button class="theme-btn" onclick="setExport('tailwind')" id="exp-tailwind">
+        <span style="font-size:18px">🎨</span> Tailwind
+      </button>
+    </div>
+  </div>
+
+  </div><!-- /.sidebar-scroll -->
+
+  <!-- Fixed Footer — Action Buttons (always visible) -->
+  <div class="sidebar-footer">
+    <div style="display:flex; gap:8px;">
+      <button class="neu-btn primary" style="flex:1" onclick="generate()">⚡ Generate</button>
+      <button class="neu-btn" style="flex:1" onclick="showCodeModal()">📋 Copy Code</button>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="neu-btn sm danger" style="flex:1" onclick="clearCanvas()">Clear All</button>
+      <button class="neu-btn sm" style="flex:1" onclick="selectAll()">Select All</button>
+    </div>
+    <div style="text-align:center; padding-top:4px;">
+      <a href="#" onclick="openTip();return false" style="font-size:11px; color:var(--text-muted); text-decoration:none; font-weight:500;">☕ Support NeuPro</a>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="component-count">
+        <strong id="countNum">0</strong> components
+      </div>
+      <!-- Quick Actions — always visible at top -->
+      <div style="display:flex;gap:8px;margin-left:16px">
+        <button class="neu-btn primary sm" onclick="generate()">⚡ Generate</button>
+        <button class="neu-btn sm" onclick="showCodeModal()">📋 Export Code</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="setView('desktop', this)" title="Desktop">🖥️</button>
+        <button class="view-btn" onclick="setView('mobile', this)" title="Mobile">📱</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div class="canvas-area" id="canvasArea">
+    <div class="canvas" id="canvas">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🧩</div>
+        <h3>Select Components</h3>
+        <p>Check boxes in the sidebar to start building</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Code Modal -->
+<div class="modal-overlay" id="codeModal">
+  <div class="modal neu">
+    <div class="modal-header">
+      <h3>📋 Export Code</h3>
+      <button class="icon-btn" onclick="closeCodeModal()">✕</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="neu-btn sm active" onclick="switchCodeTab('html', this)" id="tab-html">HTML</button>
+      <button class="neu-btn sm" onclick="switchCodeTab('react', this)" id="tab-react">React</button>
+      <button class="neu-btn sm" onclick="switchCodeTab('tailwind', this)" id="tab-tailwind">Tailwind</button>
+    </div>
+    <div class="modal-code">
+      <pre id="codeOutput">// Select components and click Generate</pre>
+    </div>
+    <div class="modal-footer">
+      <button class="neu-btn" onclick="closeCodeModal()">Close</button>
+      <button class="neu-btn primary" onclick="copyCode()">📋 Copy to Clipboard</button>
+    </div>
+  </div>
 </div>
 
-<div class="group neu">
-<div class="group-title">📐 Layout</div>
-<label class="option"><input type="checkbox" value="navbar"> Navbar</label>
-<label class="option"><input type="checkbox" value="sidebar"> Sidebar</label>
-</div>
-
-<div class="group neu">
-<div class="group-title">💰 Business</div>
-<label class="option"><input type="checkbox" value="pricing"> Pricing</label>
-<label class="option"><input type="checkbox" value="card"> Card</label>
-</div>
-
-<div class="group neu">
-<div class="group-title">💬 Feedback</div>
-<label class="option"><input type="checkbox" value="modal"> Modal</label>
-<label class="option"><input type="checkbox" value="toast"> Toast</label>
-</div>
-
-<!-- 原功能：Style -->
-<div class="group neu">
-<div class="group-title">🎛 Style</div>
-Radius <input type="range" min="5" max="40" value="18" oninput="setVar('--radius',this.value+'px')"><br>
-Distance <input type="range" min="5" max="25" value="10" oninput="setVar('--distance',this.value+'px')"><br>
-Blur <input type="range" min="5" max="40" value="20" oninput="setVar('--blur',this.value+'px')">
-</div>
-
-<!-- 原功能：Theme -->
-<div class="group neu">
-<div class="group-title">🎨 Theme</div>
-<button class="neu neu-btn" onclick="setTheme('light')">Light</button>
-<button class="neu neu-btn" onclick="setTheme('dark')">Dark</button>
-
-<!-- 新增（不覆盖） -->
-<button class="neu neu-btn" onclick="proTheme('blue')">Pro Blue</button>
-<button class="neu neu-btn" onclick="proTheme('purple')">Pro Purple</button>
-<button class="neu neu-btn" onclick="proTheme('neon')">Pro Neon</button>
-</div>
-
-<!-- 新增 Export（不影响原功能） -->
-<div class="group neu">
-<div class="group-title">⚡ Export</div>
-<button class="neu neu-btn" onclick="setMode('html')">HTML</button>
-<button class="neu neu-btn" onclick="setMode('react')">React</button>
-<button class="neu neu-btn" onclick="setMode('tailwind')">Tailwind</button>
-</div>
-
-<!-- 操作 -->
-<div class="group neu">
-<button class="neu neu-btn" onclick="generate()">Generate UI</button>
-<button class="neu neu-btn" onclick="copy()">Copy HTML</button>
-</div>
-
-</div>
-
-<!-- Canvas -->
-<div class="canvas" id="canvas"></div>
+<!-- Toasts -->
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
+/* ═══ HELPERS ═══ */
+const $ = id => document.getElementById(id);
+const canvas = $('canvas');
+const emptyState = $('emptyState');
+let currentExport = 'html';
+let currentCodeTab = 'html';
 
-let mode="html";
-
-/* 组件（完整保留 + 扩展） */
-const C={
-login:{
-html:`<div class="module neu"><h3>Login</h3><input class="input"><input class="input"><button class="neu neu-btn" data-a="login">Login</button></div>`
-},
-register:{
-html:`<div class="module neu"><h3>Register</h3><input class="input"><input class="input"><button class="neu neu-btn" data-a="register">Register</button></div>`
-},
-search:{
-html:`<div class="module neu"><input class="input"><button class="neu neu-btn" data-a="search">Search</button></div>`
-},
-navbar:{html:`<div class="module neu">Navbar</div>`},
-sidebar:{html:`<div class="module neu">Sidebar</div>`},
-pricing:{html:`<div class="module neu"><h3>$9</h3><button class="neu neu-btn">Buy</button></div>`},
-card:{html:`<div class="module neu">Card</div>`},
-modal:{html:`<div class="module neu"><button class="neu neu-btn">Open Modal</button></div>`},
-toast:{html:`<div class="module neu"><button class="neu neu-btn">Toast</button></div>`}
+/* ═══ THEME SYSTEM ═══ */
+const themes = {
+  light: {
+    bg:'#e0e5ec', bgAlt:'#d5dae1', light:'#ffffff', dark:'#a3b1c6',
+    text:'#2d3748', textMuted:'#718096', panel:'#e8ecf1',
+    primary:'#6366f1', accent:'#06b6d4'
+  },
+  dark: {
+    bg:'#1a1a2e', bgAlt:'#16162a', light:'#252545', dark:'#0f0f1a',
+    text:'#e2e8f0', textMuted:'#94a3b8', panel:'#222240',
+    primary:'#818cf8', accent:'#22d3ee'
+  },
+  ocean: {
+    bg:'#dbeafe', bgAlt:'#bfdbfe', light:'#eff6ff', dark:'#93c5fd',
+    text:'#1e3a5f', textMuted:'#64748b', panel:'#e0edff',
+    primary:'#3b82f6', accent:'#0ea5e9'
+  },
+  lavender: {
+    bg:'#ede9fe', bgAlt:'#ddd6fe', light:'#f5f3ff', dark:'#c4b5fd',
+    text:'#3b0764', textMuted:'#7c3aed', panel:'#f0ecff',
+    primary:'#8b5cf6', accent:'#a78bfa'
+  },
+  neon: {
+    bg:'#0f172a', bgAlt:'#0c1220', light:'#1e293b', dark:'#020617',
+    text:'#e2e8f0', textMuted:'#64748b', panel:'#162032',
+    primary:'#06b6d4', accent:'#22d3ee'
+  },
+  rose: {
+    bg:'#fce7f3', bgAlt:'#fbcfe8', light:'#fff1f2', dark:'#f9a8d4',
+    text:'#831843', textMuted:'#be185d', panel:'#fde8f0',
+    primary:'#ec4899', accent:'#f472b6'
+  }
 };
 
-function generate(){
-  canvas.innerHTML='';
-  document.querySelectorAll("input:checked").forEach(i=>{
-    const d=document.createElement("div");
-    d.innerHTML=C[i.value].html;
-    canvas.appendChild(d.firstElementChild);
+function applyTheme(name, btn) {
+  const t = themes[name];
+  if (!t) return;
+
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const r = document.documentElement.style;
+  r.setProperty('--bg', t.bg);
+  r.setProperty('--bg-alt', t.bgAlt);
+  r.setProperty('--light', t.light);
+  r.setProperty('--dark', t.dark);
+  r.setProperty('--text', t.text);
+  r.setProperty('--text-muted', t.textMuted);
+  r.setProperty('--panel', t.panel);
+  r.setProperty('--primary', t.primary);
+  r.setProperty('--accent', t.accent);
+
+  // Dark class
+  if (name === 'dark' || name === 'neon') {
+    document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
+  }
+
+  $('themeIcon').textContent = (name === 'dark' || name === 'neon') ? '☀️' : '🌙';
+  toast('Theme: ' + name.charAt(0).toUpperCase() + name.slice(1), 'info');
+}
+
+function toggleDark() {
+  const isDark = document.body.classList.contains('dark');
+  applyTheme(isDark ? 'light' : 'dark');
+}
+
+/* ═══ VAR CONTROL ═══ */
+function setVar(k, v) { document.documentElement.style.setProperty(k, v); }
+
+/* ═══ VIEW TOGGLE ═══ */
+function setView(mode, btn) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  canvas.classList.toggle('mobile', mode === 'mobile');
+}
+
+/* ═══ EXPORT MODE ═══ */
+function setExport(m) {
+  currentExport = m;
+  toast('Export: ' + m.toUpperCase(), 'info');
+}
+
+/* ═══ COMPONENTS ═══ */
+const C = {
+  login: {
+    label: 'Login',
+    html: `<div class="module neu"><span class="module-label">LOGIN</span>
+      <h3 style="font-size:20px;font-weight:700;text-align:center">Welcome Back</h3>
+      <p style="font-size:13px;color:var(--text-muted);text-align:center">Sign in to your account</p>
+      <input class="neu-input" placeholder="Email address" type="email">
+      <input class="neu-input" placeholder="Password" type="password">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" style="accent-color:var(--primary)"> Remember me
+        </label>
+        <a href="#" style="color:var(--primary);font-weight:500">Forgot?</a>
+      </div>
+      <button class="neu-btn primary" style="width:100%;height:46px" onclick="toast('Login success!','success')">Sign In</button>
+      <p style="font-size:13px;text-align:center;color:var(--text-muted)">Don't have an account? <a href="#" style="color:var(--primary);font-weight:600">Sign Up</a></p>
+    </div>`,
+    react: `function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+  return (
+    <div className="module neu">
+      <h3>Welcome Back</h3>
+      <p>Sign in to your account</p>
+      <input className="neu-input" placeholder="Email" type="email"
+        value={email} onChange={e => setEmail(e.target.value)} />
+      <input className="neu-input" placeholder="Password" type="password"
+        value={pass} onChange={e => setPass(e.target.value)} />
+      <button className="neu-btn primary" onClick={() => alert('Login!')}>Sign In</button>
+    </div>
+  );
+}`
+  },
+
+  register: {
+    label: 'Register',
+    html: `<div class="module neu"><span class="module-label">REGISTER</span>
+      <h3 style="font-size:20px;font-weight:700;text-align:center">Create Account</h3>
+      <p style="font-size:13px;color:var(--text-muted);text-align:center">Join us today</p>
+      <input class="neu-input" placeholder="Full name" type="text">
+      <input class="neu-input" placeholder="Email address" type="email">
+      <input class="neu-input" placeholder="Password" type="password">
+      <input class="neu-input" placeholder="Confirm password" type="password">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+        <input type="checkbox" style="accent-color:var(--primary)"> I agree to the Terms
+      </label>
+      <button class="neu-btn primary" style="width:100%;height:46px" onclick="toast('Account created!','success')">Create Account</button>
+    </div>`,
+    react: `function RegisterForm() {
+  return (
+    <div className="module neu">
+      <h3>Create Account</h3>
+      <input className="neu-input" placeholder="Full name" />
+      <input className="neu-input" placeholder="Email" type="email" />
+      <input className="neu-input" placeholder="Password" type="password" />
+      <button className="neu-btn primary">Create Account</button>
+    </div>
+  );
+}`
+  },
+
+  search: {
+    label: 'Search',
+    html: `<div class="module neu" style="flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px">
+      <span class="module-label">SEARCH</span>
+      <input class="neu-input" placeholder="Search anything..." style="flex:1;min-width:0">
+      <button class="neu-btn primary" onclick="toast('Searching...','info')">🔍</button>
+    </div>`,
+    react: `function SearchBar() {
+  const [q, setQ] = useState('');
+  return (
+    <div className="module neu" style={{flexDirection:'row'}}>
+      <input className="neu-input" placeholder="Search..." value={q} onChange={e=>setQ(e.target.value)} />
+      <button className="neu-btn primary">🔍</button>
+    </div>
+  );
+}`
+  },
+
+  contact: {
+    label: 'Contact',
+    html: `<div class="module neu"><span class="module-label">CONTACT</span>
+      <h3 style="font-size:18px;font-weight:700">Get in Touch</h3>
+      <input class="neu-input" placeholder="Your name" type="text">
+      <input class="neu-input" placeholder="Email" type="email">
+      <textarea class="neu-textarea" placeholder="Your message..." rows="3"></textarea>
+      <button class="neu-btn primary" style="width:100%" onclick="toast('Message sent!','success')">Send Message</button>
+    </div>`
+  },
+
+  newsletter: {
+    label: 'Newsletter',
+    html: `<div class="module neu" style="text-align:center"><span class="module-label">NEWSLETTER</span>
+      <div style="font-size:32px;margin-bottom:4px">📬</div>
+      <h3 style="font-size:18px;font-weight:700">Stay Updated</h3>
+      <p style="font-size:13px;color:var(--text-muted)">Get the latest news delivered to your inbox</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input class="neu-input" placeholder="your@email.com" type="email" style="flex:1;min-width:0">
+        <button class="neu-btn primary" onclick="toast('Subscribed!','success')">Subscribe</button>
+      </div>
+    </div>`
+  },
+
+  navbar: {
+    label: 'Navbar',
+    html: `<div class="module neu" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 24px;gap:12px">
+      <span class="module-label">NAVBAR</span>
+      <div style="font-weight:700;font-size:18px;display:flex;align-items:center;gap:8px">
+        <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">◆</span>
+        NeuPro
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="neu-btn sm active" style="font-size:12px">Home</button>
+        <button class="neu-btn sm" style="font-size:12px">Features</button>
+        <button class="neu-btn sm" style="font-size:12px">Pricing</button>
+        <button class="neu-btn sm" style="font-size:12px">Contact</button>
+      </div>
+    </div>`
+  },
+
+  sidebar_comp: {
+    label: 'Sidebar',
+    html: `<div class="module neu" style="min-height:200px;align-items:flex-start;gap:8px;padding:20px">
+      <span class="module-label">SIDEBAR</span>
+      <div style="font-weight:700;font-size:16px;margin-bottom:8px">📁 Dashboard</div>
+      <div style="display:flex;flex-direction:column;gap:4px;width:100%">
+        <div style="padding:8px 12px;border-radius:10px;background:var(--primary);color:#fff;font-size:13px;font-weight:500">📊 Overview</div>
+        <div style="padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer">📈 Analytics</div>
+        <div style="padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer">👥 Users</div>
+        <div style="padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer">⚙️ Settings</div>
+        <div style="padding:8px 12px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer">❓ Help</div>
+      </div>
+    </div>`
+  },
+
+  footer: {
+    label: 'Footer',
+    html: `<div class="module neu" style="text-align:center;gap:12px">
+      <span class="module-label">FOOTER</span>
+      <div style="font-weight:700;font-size:16px">◆ NeuPro</div>
+      <div style="display:flex;gap:16px;justify-content:center;font-size:13px;color:var(--text-muted)">
+        <a href="#" style="color:var(--text-muted)">About</a>
+        <a href="#" style="color:var(--text-muted)">Privacy</a>
+        <a href="#" style="color:var(--text-muted)">Terms</a>
+        <a href="#" style="color:var(--text-muted)">Contact</a>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted)">© 2026 NeuPro. All rights reserved.</div>
+    </div>`
+  },
+
+  pricing: {
+    label: 'Pricing',
+    html: `<div class="module neu" style="text-align:center;gap:16px;min-height:240px">
+      <span class="module-label">PRICING</span>
+      <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--primary)">Pro Plan</div>
+      <div style="display:flex;align-items:baseline;justify-content:center;gap:4px">
+        <span style="font-size:42px;font-weight:800">$29</span>
+        <span style="font-size:14px;color:var(--text-muted)">/month</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;text-align:left;width:100%">
+        <div>✅ Unlimited projects</div>
+        <div>✅ All 15+ components</div>
+        <div>✅ 6 theme presets</div>
+        <div>✅ React & Tailwind export</div>
+        <div>✅ Priority support</div>
+      </div>
+      <button class="neu-btn primary" style="width:100%;height:48px;font-size:15px" onclick="toast('Plan selected!','success')">Get Started</button>
+    </div>`
+  },
+
+  card: {
+    label: 'Card',
+    html: `<div class="module neu" style="text-align:center;gap:14px">
+      <span class="module-label">CARD</span>
+      <div style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff">⚡</div>
+      <h3 style="font-size:18px;font-weight:700">Lightning Fast</h3>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.6">Generate beautiful neumorphic UI components in milliseconds. No build step required.</p>
+      <a href="#" style="font-size:14px;font-weight:600;color:var(--primary)">Learn more →</a>
+    </div>`
+  },
+
+  stats: {
+    label: 'Stats',
+    html: `<div class="module neu" style="gap:16px">
+      <span class="module-label">STATS</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%">
+        <div class="neu-flat" style="padding:16px;text-align:center">
+          <div style="font-size:24px;font-weight:800;color:var(--primary)">2.4k</div>
+          <div style="font-size:12px;color:var(--text-muted)">Users</div>
+        </div>
+        <div class="neu-flat" style="padding:16px;text-align:center">
+          <div style="font-size:24px;font-weight:800;color:var(--accent)">98%</div>
+          <div style="font-size:12px;color:var(--text-muted)">Uptime</div>
+        </div>
+        <div class="neu-flat" style="padding:16px;text-align:center">
+          <div style="font-size:24px;font-weight:800;color:var(--success)">15k</div>
+          <div style="font-size:12px;color:var(--text-muted)">Downloads</div>
+        </div>
+        <div class="neu-flat" style="padding:16px;text-align:center">
+          <div style="font-size:24px;font-weight:800;color:var(--warning)">4.9</div>
+          <div style="font-size:12px;color:var(--text-muted)">Rating</div>
+        </div>
+      </div>
+    </div>`
+  },
+
+  profile: {
+    label: 'Profile',
+    html: `<div class="module neu" style="text-align:center;gap:14px">
+      <span class="module-label">PROFILE</span>
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;margin:0 auto;font-weight:700">JD</div>
+      <div>
+        <h3 style="font-size:18px;font-weight:700">Jane Doe</h3>
+        <p style="font-size:13px;color:var(--text-muted)">Senior UI Designer</p>
+      </div>
+      <div style="display:flex;gap:20px;justify-content:center">
+        <div style="text-align:center"><div style="font-weight:700;color:var(--primary)">128</div><div style="font-size:11px;color:var(--text-muted)">Posts</div></div>
+        <div style="text-align:center"><div style="font-weight:700;color:var(--primary)">2.1k</div><div style="font-size:11px;color:var(--text-muted)">Followers</div></div>
+        <div style="text-align:center"><div style="font-weight:700;color:var(--primary)">384</div><div style="font-size:11px;color:var(--text-muted)">Following</div></div>
+      </div>
+      <button class="neu-btn primary" style="width:100%" onclick="toast('Following!','success')">Follow</button>
+    </div>`
+  },
+
+  modal: {
+    label: 'Modal',
+    html: `<div class="module neu" style="text-align:center;gap:14px">
+      <span class="module-label">MODAL</span>
+      <h3 style="font-size:18px;font-weight:700">Confirm Action</h3>
+      <p style="font-size:14px;color:var(--text-muted)">Are you sure you want to delete this item? This action cannot be undone.</p>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="neu-btn" onclick="toast('Cancelled','info')">Cancel</button>
+        <button class="neu-btn primary" style="background:linear-gradient(135deg,var(--danger),#dc2626)" onclick="toast('Deleted!','warning')">Delete</button>
+      </div>
+    </div>`
+  },
+
+  toast_comp: {
+    label: 'Toast',
+    html: `<div class="module neu" style="gap:12px">
+      <span class="module-label">TOAST</span>
+      <h3 style="font-size:16px;font-weight:700">Notifications</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="neu-btn sm" style="justify-content:flex-start;gap:6px" onclick="toast('Changes saved!','success')">✅ Success toast</button>
+        <button class="neu-btn sm" style="justify-content:flex-start;gap:6px" onclick="toast('Processing...','info')">ℹ️ Info toast</button>
+        <button class="neu-btn sm" style="justify-content:flex-start;gap:6px" onclick="toast('Check your input','warning')">⚠️ Warning toast</button>
+      </div>
+    </div>`
+  },
+
+  alert: {
+    label: 'Alert',
+    html: `<div class="module neu" style="gap:12px">
+      <span class="module-label">ALERT</span>
+      <div class="neu-flat" style="padding:14px 16px;border-left:4px solid var(--success);display:flex;align-items:center;gap:10px;font-size:14px">
+        <span>✅</span> Your changes have been saved successfully.
+      </div>
+      <div class="neu-flat" style="padding:14px 16px;border-left:4px solid var(--warning);display:flex;align-items:center;gap:10px;font-size:14px">
+        <span>⚠️</span> Your session will expire in 5 minutes.
+      </div>
+      <div class="neu-flat" style="padding:14px 16px;border-left:4px solid var(--danger);display:flex;align-items:center;gap:10px;font-size:14px">
+        <span>❌</span> Failed to save. Please try again.
+      </div>
+    </div>`
+  },
+
+  toggle_comp: {
+    label: 'Toggle',
+    html: `<div class="module neu" style="gap:16px;align-items:flex-start">
+      <span class="module-label">TOGGLE</span>
+      <h3 style="font-size:16px;font-weight:700">Settings</h3>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <span style="font-size:14px">Dark Mode</span>
+        <div class="neu-toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <span style="font-size:14px">Notifications</span>
+        <div class="neu-toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <span style="font-size:14px">Auto-save</span>
+        <div class="neu-toggle" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <span style="font-size:14px">Analytics</span>
+        <div class="neu-toggle on" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>`
+  },
+
+  slider_comp: {
+    label: 'Slider',
+    html: `<div class="module neu" style="gap:18px;align-items:flex-start">
+      <span class="module-label">SLIDER</span>
+      <h3 style="font-size:16px;font-weight:700">Adjust Values</h3>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--text-muted)">Volume</span>
+          <span style="color:var(--primary);font-weight:700;font-family:var(--mono)">75%</span>
+        </div>
+        <input type="range" min="0" max="100" value="75" style="width:100%">
+      </div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--text-muted)">Brightness</span>
+          <span style="color:var(--primary);font-weight:700;font-family:var(--mono)">50%</span>
+        </div>
+        <input type="range" min="0" max="100" value="50" style="width:100%">
+      </div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--text-muted)">Contrast</span>
+          <span style="color:var(--primary);font-weight:700;font-family:var(--mono)">30%</span>
+        </div>
+        <input type="range" min="0" max="100" value="30" style="width:100%">
+      </div>
+    </div>`
+  },
+
+  progress: {
+    label: 'Progress',
+    html: `<div class="module neu" style="gap:16px;align-items:flex-start">
+      <span class="module-label">PROGRESS</span>
+      <h3 style="font-size:16px;font-weight:700">Project Progress</h3>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Design</span><span style="color:var(--success);font-weight:600">100%</span></div>
+        <div class="neu-progress"><div class="neu-progress-fill" style="width:100%"></div></div>
+      </div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Development</span><span style="color:var(--primary);font-weight:600">72%</span></div>
+        <div class="neu-progress"><div class="neu-progress-fill" style="width:72%"></div></div>
+      </div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Testing</span><span style="color:var(--warning);font-weight:600">45%</span></div>
+        <div class="neu-progress"><div class="neu-progress-fill" style="width:45%"></div></div>
+      </div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Deployment</span><span style="color:var(--danger);font-weight:600">18%</span></div>
+        <div class="neu-progress"><div class="neu-progress-fill" style="width:18%"></div></div>
+      </div>
+    </div>`
+  },
+
+  buttons: {
+    label: 'Buttons',
+    html: `<div class="module neu" style="gap:12px">
+      <span class="module-label">BUTTONS</span>
+      <h3 style="font-size:16px;font-weight:700">Button Variants</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="neu-btn primary">Primary</button>
+        <button class="neu-btn">Default</button>
+        <button class="neu-btn sm">Small</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <button class="neu-btn" style="color:var(--success)">✓ Success</button>
+        <button class="neu-btn" style="color:var(--warning)">⚠ Warning</button>
+        <button class="neu-btn" style="color:var(--danger)">✕ Danger</button>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="neu-btn" disabled style="opacity:0.5;cursor:not-allowed">Disabled</button>
+        <button class="neu-btn primary" style="width:100%">Full Width</button>
+      </div>
+    </div>`
+  },
+
+  tabs_comp: {
+    label: 'Tabs',
+    html: `<div class="module neu" style="gap:14px;align-items:flex-start">
+      <span class="module-label">TABS</span>
+      <div style="display:flex;gap:6px;width:100%">
+        <button class="neu-btn sm active" style="flex:1" onclick="this.parentElement.querySelectorAll('.neu-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">All</button>
+        <button class="neu-btn sm" style="flex:1" onclick="this.parentElement.querySelectorAll('.neu-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Active</button>
+        <button class="neu-btn sm" style="flex:1" onclick="this.parentElement.querySelectorAll('.neu-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Archived</button>
+      </div>
+      <div class="neu-flat" style="padding:16px;width:100%">
+        <p style="font-size:14px;color:var(--text-muted)">Tab content goes here. Click tabs above to switch.</p>
+      </div>
+    </div>`
+  }
+};
+
+/* ═══ GENERATE ═══ */
+function generate() {
+  const checked = [...document.querySelectorAll('.sidebar input:checked')];
+  canvas.innerHTML = '';
+
+  if (checked.length === 0) {
+    canvas.innerHTML = `<div class="empty-state" id="emptyState">
+      <div class="empty-icon">🧩</div>
+      <h3>Select Components</h3>
+      <p>Check boxes in the sidebar to start building</p>
+    </div>`;
+    $('countNum').textContent = '0';
+    return;
+  }
+
+  checked.forEach(input => {
+    const comp = C[input.value];
+    if (!comp) return;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = comp.html;
+    wrapper.dataset.comp = input.value;
+    canvas.appendChild(wrapper.firstElementChild);
+  });
+
+  $('countNum').textContent = checked.length;
+}
+
+/* ═══ CLEAR / SELECT ALL ═══ */
+function clearCanvas() {
+  document.querySelectorAll('.sidebar input:checked').forEach(i => i.checked = false);
+  generate();
+  toast('Canvas cleared', 'info');
+}
+
+function selectAll() {
+  document.querySelectorAll('.sidebar input[type="checkbox"]').forEach(i => i.checked = true);
+  generate();
+  toast('All components added', 'success');
+}
+
+/* ═══ CODE GENERATION ═══ */
+function getExportCSS() {
+  const r = getComputedStyle(document.documentElement);
+  return `:root {
+  --bg: ${r.getPropertyValue('--bg').trim()};
+  --light: ${r.getPropertyValue('--light').trim()};
+  --dark: ${r.getPropertyValue('--dark').trim()};
+  --text: ${r.getPropertyValue('--text').trim()};
+  --radius: ${r.getPropertyValue('--radius').trim()};
+  --distance: ${r.getPropertyValue('--distance').trim()};
+  --blur: ${r.getPropertyValue('--blur').trim()};
+  --primary: ${r.getPropertyValue('--primary').trim()};
+  --accent: ${r.getPropertyValue('--accent').trim()};
+}
+
+.neu {
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow:
+    var(--distance) var(--distance) var(--blur) var(--dark),
+    calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+.neu-btn {
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow:
+    var(--distance) var(--distance) var(--blur) var(--dark),
+    calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+  transition: 0.2s;
+}
+
+.neu-btn:active {
+  box-shadow:
+    inset var(--distance) var(--distance) var(--blur) var(--dark),
+    inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+.neu-input {
+  height: 42px;
+  border: none;
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 5px 5px 10px var(--dark),
+    inset -5px -5px 10px var(--light);
+  outline: none;
+  width: 100%;
+}
+
+.neu-flat {
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow:
+    calc(var(--distance)*0.5) calc(var(--distance)*0.5) calc(var(--blur)*0.5) var(--dark),
+    calc(-1*var(--distance)*0.5) calc(-1*var(--distance)*0.5) calc(var(--blur)*0.5) var(--light);
+}`;
+}
+
+function generateCode(format) {
+  const checked = [...document.querySelectorAll('.sidebar input:checked')];
+  if (checked.length === 0) return '// No components selected';
+
+  if (format === 'react') {
+    let code = `import React, { useState } from 'react';\nimport './NeuStyles.css';\n\n`;
+    checked.forEach(input => {
+      const comp = C[input.value];
+      if (comp?.react) {
+        code += comp.react + '\n\n';
+      }
+    });
+    code += `function App() {\n  return (\n    <div className="app">\n`;
+    checked.forEach(input => {
+      const comp = C[input.value];
+      const name = comp?.react?.match(/function (\w+)/)?.[1];
+      if (name) code += `      <${name} />\n`;
+    });
+    code += `    </div>\n  );\n}\n\nexport default App;`;
+    return code;
+  }
+
+  if (format === 'tailwind') {
+    let html = `<!-- Tailwind + Neumorphism -->\n<!-- Add to tailwind.config.js extend: -->\n`;
+    html += `<!-- boxShadow: { 'neu': '10px 10px 20px #a3b1c6, -10px -10px 20px #ffffff' } -->\n\n`;
+    checked.forEach(input => {
+      const comp = C[input.value];
+      if (comp) {
+        let tw = comp.html
+          .replace(/class="module neu"/g, 'class="rounded-2xl bg-[#e0e5ec] shadow-neu p-6"')
+          .replace(/class="neu-btn primary"/g, 'class="rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold px-6 py-3 shadow-neu hover:-translate-y-0.5 transition"')
+          .replace(/class="neu-btn"/g, 'class="rounded-xl bg-[#e0e5ec] font-semibold px-6 py-3 shadow-neu hover:-translate-y-0.5 transition"')
+          .replace(/class="neu-input"/g, 'class="rounded-xl bg-[#e0e5ec] shadow-inner-neu px-4 py-2 w-full outline-none"')
+          .replace(/class="neu-flat"/g, 'class="rounded-2xl bg-[#e0e5ec] shadow-sm"')
+          .replace(/class="neu-textarea"/g, 'class="rounded-xl bg-[#e0e5ec] shadow-inner-neu p-3 w-full outline-none resize-y"')
+          .replace(/class="neu-progress"/g, 'class="h-2.5 rounded-full bg-[#e0e5ec] shadow-inner-neu overflow-hidden"')
+          .replace(/class="neu-progress-fill"/g, 'class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all"');
+        html += tw + '\n\n';
+      }
+    });
+    return html;
+  }
+
+  // Default: HTML
+  let html = `<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Neumorphism UI</title>\n<style>\n`;
+  html += getExportCSS();
+  html += `\n\n.module { padding: 24px; display: flex; flex-direction: column; gap: 12px; }\n.module-label { font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.5; }\n</style>\n</head>\n<body style="background:var(--bg);padding:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;font-family:Inter,sans-serif">\n\n`;
+  checked.forEach(input => {
+    const comp = C[input.value];
+    if (comp) {
+      let cleanHtml = comp.html
+        .replace(/onclick="[^"]*"/g, '')
+        .replace(/<span class="module-label">[^<]*<\/span>\n?\s*/g, '');
+      html += cleanHtml.trim() + '\n\n';
+    }
+  });
+  html += `</body>\n</html>`;
+  return html;
+}
+
+/* ═══ CODE MODAL ═══ */
+function showCodeModal() {
+  $('codeModal').classList.add('show');
+  switchCodeTab(currentExport, $('tab-' + currentExport));
+}
+
+function closeCodeModal() {
+  $('codeModal').classList.remove('show');
+}
+
+function switchCodeTab(format, btn) {
+  currentCodeTab = format;
+  document.querySelectorAll('.modal-tabs .neu-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  $('codeOutput').textContent = generateCode(format);
+}
+
+function copyCode() {
+  const code = generateCode(currentCodeTab);
+  navigator.clipboard.writeText(code).then(() => {
+    toast('Copied to clipboard!', 'success');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    toast('Copied!', 'success');
   });
 }
 
-function setVar(k,v){document.documentElement.style.setProperty(k,v);}
-function setTheme(t){document.body.className=t==='dark'?'dark':'';}
-
-function proTheme(t){
-  if(t==="blue") document.documentElement.style.setProperty('--bg','#dbeafe');
-  if(t==="purple") document.documentElement.style.setProperty('--bg','#ede9fe');
-  if(t==="neon") document.documentElement.style.setProperty('--bg','#0f172a');
+/* ═══ TOAST ═══ */
+function toast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  const icons = { success: '✅', info: 'ℹ️', warning: '⚠️' };
+  t.innerHTML = `<span>${icons[type] || ''}</span> ${msg}`;
+  $('toastWrap').appendChild(t);
+  setTimeout(() => t.remove(), 2500);
 }
 
-function setMode(m){
-  mode=m;
-  toast("Export mode: "+m);
+/* ═══ INIT ═══ */
+// Restore dark
+if (localStorage.getItem('neupro-dark') === 'true') {
+  applyTheme('dark');
 }
 
-function toast(msg){
-  const t=document.createElement('div');
-  t.className='toast';
-  t.innerText=msg;
-  toastWrap.appendChild(t);
-  setTimeout(()=>t.remove(),2500);
+/* ═══ TIP MODAL ═══ */
+function openTip() {
+  document.getElementById('tipOverlay').classList.add('show');
 }
-
-function copy(){
-  navigator.clipboard.writeText(canvas.innerHTML);
-  toast("Copied successfully");
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
 }
-
-document.addEventListener("click",e=>{
-  const a=e.target.dataset.a;
-  if(!a)return;
-  toast(a+" success");
-});
-
-function back(){location.href="index.html";}
+function openTipPage(amount) {
+  const bmc  = 'qidot';
+  window.open(`https://buymeacoffee.com/${bmc}`, '_blank', 'noopener');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
 </script>
+
+<!-- ═══ TIP BUTTON & MODAL ═══ -->
+<button class="tip-float" onclick="openTip()" aria-label="Support NeuPro">
+  ☕
+  <span class="tip-label">Support NeuPro</span>
+</button>
+
+<div class="tip-overlay" id="tipOverlay" onclick="if(event.target===this)closeTip()">
+  <div class="tip-card">
+    <h3>☕ Support NeuPro</h3>
+    <p>NeuPro is free. If it saved you time,<br>consider buying me a coffee!</p>
+    <div class="tip-amounts">
+      <button class="tip-amount-btn" onclick="openTipPage(3)">$3</button>
+      <button class="tip-amount-btn" onclick="openTipPage(5)">$5</button>
+      <button class="tip-amount-btn" onclick="openTipPage(10)">$10</button>
+    </div>
+    <div class="tip-platform">
+      <a href="https://ko-fi.com/Qidot" target="_blank" rel="noopener">☕ Ko-fi</a>
+      <a href="https://buymeacoffee.com/qidot" target="_blank" rel="noopener">💛 Buy Me a Coffee</a>
+    </div>
+    <button class="tip-close" onclick="closeTip()">Maybe later</button>
+  </div>
+</div>
 
 </body>
 </html>
