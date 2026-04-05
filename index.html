@@ -3,61 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphism Design System Generator</title>
+
+<title>Neumorphism UI Generator – Build Soft UI Instantly</title>
+<meta name="description" content="Create modern neumorphism UI components instantly. Buttons, cards, layouts and more.">
+<meta name="keywords" content="neumorphism ui generator, soft ui, css generator, ui builder">
+
+<meta property="og:title" content="Neumorphism UI Generator">
+<meta property="og:description" content="Build beautiful soft UI instantly">
+<meta property="og:type" content="website">
 
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#e0e5ec;
-  color:#333;
-}
-
-.hero{
   height:100vh;
   display:flex;
-  flex-direction:column;
-  align-items:center;
   justify-content:center;
-  text-align:center;
-  padding:20px;
+  align-items:center;
+  font-family:Inter,Arial;
+  background:#e0e5ec;
 }
 
-.hero h1{
-  font-size:44px;
+/* 拟态 */
+.neu{
+  border-radius:20px;
+  background:#e0e5ec;
+  box-shadow:10px 10px 20px #a3b1c6,
+             -10px -10px 20px #ffffff;
 }
 
-.hero p{
-  color:#666;
-}
-
-.btn{
-  padding:14px 32px;
-  border-radius:22px;
+/* 按钮 */
+.neu-btn{
+  padding:14px 30px;
   border:none;
   cursor:pointer;
-  background:#e0e5ec;
-  box-shadow:10px 10px 20px #a3b1c6,-10px -10px 20px #fff;
-  margin:6px;
+  transition:.2s;
+}
+.neu-btn:hover{transform:translateY(-2px);}
+.neu-btn:active{
+  box-shadow:inset 6px 6px 12px #a3b1c6,
+             inset -6px -6px 12px #ffffff;
+  transform:translateY(1px);
+}
+
+.container{
+  padding:60px;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hero">
-<h1>Neumorphism Design System Generator</h1>
-<p>Build modern neumorphism UI with real components, themes & export</p>
-<p>Free • No login • Instant UI</p>
-
-<button class="btn" onclick="go()">🚀 Open Generator</button>
-<button class="btn" onclick="go()">✨ Explore Pro</button>
-</div>
+<main class="container neu">
+  <h1>Neumorphism UI Generator</h1>
+  <p>Create professional soft UI components instantly.</p>
+  <button class="neu neu-btn" onclick="go()">🚀 Try Now</button>
+</main>
 
 <script>
-function go(){
-  window.location.href="./generator.html";
-}
+function go(){location.href="generator.html";}
 </script>
 
 </body>
