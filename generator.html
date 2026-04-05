@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neumorphism Generator</title>
+
+<style>
+:root{
+  --bg:#e0e5ec;
+  --light:#ffffff;
+  --dark:#a3b1c6;
+  --radius:18px;
+  --distance:10px;
+  --blur:20px;
+}
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+  display:flex;
+}
+
+/* 面板 */
+.panel{
+  width:260px;
+  padding:20px;
+  background:#fff;
+}
+
+/* 画布 */
+.canvas{
+  flex:1;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:30px;
+}
+
+/* 模块 */
+.module{
+  width:320px;
+  padding:25px;
+  border-radius:var(--radius);
+  background:var(--bg);
+  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
+             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* 输入 */
+.input{
+  width:100%;
+  height:40px;
+  margin-bottom:10px;
+  border:none;
+  padding:0 10px;
+  border-radius:var(--radius);
+  background:var(--bg);
+  box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
+             inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* 按钮 */
+.btn{
+  width:100%;
+  height:45px;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--bg);
+  cursor:pointer;
+  margin-bottom:10px;
+  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
+             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+  transition:0.2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{
+  box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
+             inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* 卡片 */
+.card{
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:var(--radius);
+  background:var(--bg);
+  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
+             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
+}
+
+/* 代码区 */
+.code{
+  width:360px;
+  background:#111;
+  color:#0f0;
+  padding:10px;
+  font-size:12px;
+  overflow:auto;
+}
+
+/* 提示 */
+.tip{
+  text-align:center;
+  opacity:0.6;
+  margin-top:80px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="panel">
+  <button class="btn" onclick="back()">← 返回首页</button>
+
+  <h3>选择模块</h3>
+  <label><input type="checkbox" value="login"> 登录</label><br>
+  <label><input type="checkbox" value="register"> 注册</label><br>
+  <label><input type="checkbox" value="dashboard"> Dashboard</label><br><br>
+
+  <button class="btn" onclick="generatePage()">⚡ 生成页面</button>
+  <button class="btn" onclick="copyCode()">📋 复制代码</button>
+
+  <hr>
+  <p style="font-size:12px;color:#888">
+    ✨ Pro version coming soon
+  </p>
+</div>
+
+<div class="canvas" id="canvas"></div>
+<div class="code"><pre id="code"></pre></div>
+
+<script>
+const canvas = document.getElementById('canvas');
+
+/* 初始化提示 */
+window.onload = function(){
+  canvas.innerHTML = `
+    <div class="tip">
+      <h2>🎨 Neumorphism UI Generator</h2>
+      <p>选择模块 → 点击生成页面 → 一键复制</p>
+    </div>
+  `;
+}
+
+/* 模块 */
+function login(){
+return `<div class="module">
+<h2>Login</h2>
+<input class="input" placeholder="Username" />
+<input class="input" placeholder="Password" type="password" />
+<button class="btn">Login</button>
+</div>`;
+}
+
+function register(){
+return `<div class="module">
+<h2>Register</h2>
+<input class="input" placeholder="Username" />
+<input class="input" placeholder="Email" />
+<input class="input" placeholder="Password" type="password" />
+<input class="input" placeholder="Confirm Password" type="password" />
+<button class="btn">Sign Up</button>
+</div>`;
+}
+
+function dashboard(){
+return `<div class="module">
+<div class="card"><b>Users</b><br>1200</div>
+<div class="card"><b>Revenue</b><br>$8200</div>
+</div>`;
+}
+
+/* 生成 */
+function generatePage(){
+  let selected = document.querySelectorAll('input[type=checkbox]:checked');
+  let html='';
+
+  if(selected.length===0){
+    canvas.innerHTML = `<div class="tip"><p>⚠️ 请先选择模块</p></div>`;
+    return;
+  }
+
+  canvas.innerHTML='';
+
+  selected.forEach(i=>{
+    if(i.value==='login'){canvas.innerHTML+=login(); html+=login();}
+    if(i.value==='register'){canvas.innerHTML+=register(); html+=register();}
+    if(i.value==='dashboard'){canvas.innerHTML+=dashboard(); html+=dashboard();}
+  });
+
+  document.getElementById('code').innerText = html;
+}
+
+/* 复制 */
+function copyCode(){
+  navigator.clipboard.writeText(document.getElementById('code').innerText);
+
+  const msg=document.createElement('div');
+  msg.innerText='✅ 已复制代码';
+  msg.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;';
+  document.body.appendChild(msg);
+  setTimeout(()=>msg.remove(),1500);
+}
+
+function back(){
+  window.location.href="./index.html";
+}
+</script>
+
+</body>
+</html>
