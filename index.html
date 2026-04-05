@@ -1544,8 +1544,7 @@ a:hover { color: var(--primary-light); }
       <button class="tip-amount-btn" onclick="openTipPage(10)">$10</button>
     </div>
     <div class="tip-platform">
-      <a href="https://ko-fi.com/Qidot" target="_blank" rel="noopener">☕ Ko-fi</a>
-      <a href="https://buymeacoffee.com/qidot" target="_blank" rel="noopener">💛 Buy Me a Coffee</a>
+      <a href="https://ko-fi.com/Qidot" target="_blank" rel="noopener">☕ Buy me a coffee on Ko-fi</a>
     </div>
     <button class="tip-close" onclick="closeTip()">Maybe later</button>
   </div>
@@ -1610,8 +1609,8 @@ function closeTip() {
   document.getElementById('tipOverlay').classList.remove('show');
 }
 function openTipPage(amount) {
-  const bmc  = 'qidot';
-  window.open(`https://buymeacoffee.com/${bmc}`, '_blank', 'noopener');
+  const kofi = 'Qidot';
+  window.open(`https://ko-fi.com/${kofi}`, '_blank', 'noopener');
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
 </script>
