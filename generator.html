@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphism UI Generator</title>
+<title>Neumorphism Pro Generator</title>
 
 <style>
 :root{
   --bg:#e0e5ec;
   --light:#ffffff;
   --dark:#a3b1c6;
+  --text:#333;
+  --panel-bg:#ffffff;
+  --panel-text:#333;
+  --accent:#6c8cff;
+
   --radius:18px;
   --distance:10px;
   --blur:20px;
@@ -17,97 +22,81 @@
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   background:var(--bg);
+  color:var(--text);
   display:flex;
+  transition:.3s;
 }
 
-/* Sidebar */
+/* sidebar */
 .panel{
-  width:260px;
+  width:300px;
   padding:20px;
-  background:#fff;
+  background:var(--panel-bg);
+  color:var(--panel-text);
+  transition:.3s;
 }
 
-/* Canvas */
+/* fix text visibility */
+.panel label,
+.panel h3,
+.panel h4{
+  color:var(--panel-text);
+}
+
 .canvas{
   flex:1;
   padding:40px;
   display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:30px;
+  flex-wrap:wrap;
+  gap:25px;
+  justify-content:center;
 }
 
-/* UI Blocks */
 .module{
-  width:320px;
-  padding:25px;
+  width:300px;
+  padding:20px;
   border-radius:var(--radius);
   background:var(--bg);
+  color:var(--text);
   box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
              calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* Inputs */
 .input{
   width:100%;
   height:40px;
   margin-bottom:10px;
   border:none;
-  padding:0 10px;
   border-radius:var(--radius);
+  padding:0 10px;
   background:var(--bg);
+  color:var(--text);
   box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
              inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* Buttons */
 .btn{
   width:100%;
   height:45px;
   border:none;
   border-radius:var(--radius);
   background:var(--bg);
+  color:var(--text);
+  margin-bottom:10px;
   cursor:pointer;
-  margin-bottom:10px;
-  box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
-             calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
-  transition:0.2s;
-}
-
-.btn:hover{transform:translateY(-2px)}
-
-.btn:active{
-  box-shadow:inset var(--distance) var(--distance) var(--blur) var(--dark),
-             inset calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
-}
-
-/* Cards */
-.card{
-  padding:15px;
-  margin-bottom:10px;
-  border-radius:var(--radius);
-  background:var(--bg);
   box-shadow:var(--distance) var(--distance) var(--blur) var(--dark),
              calc(-1*var(--distance)) calc(-1*var(--distance)) var(--blur) var(--light);
 }
 
-/* Code Panel */
 .code{
-  width:360px;
+  width:380px;
   background:#111;
   color:#0f0;
   padding:10px;
   font-size:12px;
   overflow:auto;
-}
-
-/* Empty State */
-.tip{
-  text-align:center;
-  opacity:0.6;
-  margin-top:80px;
 }
 </style>
 </head>
@@ -115,106 +104,226 @@ body{
 <body>
 
 <div class="panel">
-  <button class="btn" onclick="back()">← Back</button>
 
-  <h3>Select Components</h3>
+<button class="btn" onclick="back()">← Back</button>
 
-  <label><input type="checkbox" value="login"> Login Form</label><br>
-  <label><input type="checkbox" value="register"> Register Form</label><br>
-  <label><input type="checkbox" value="dashboard"> Dashboard Cards</label><br><br>
+<h3>🧩 Form</h3>
+<label><input type="checkbox" value="login"> Login</label><br>
+<label><input type="checkbox" value="register"> Register</label><br>
+<label><input type="checkbox" value="search"> Search Bar</label><br>
 
-  <button class="btn" onclick="generatePage()">⚡ Generate UI</button>
-  <button class="btn" onclick="copyCode()">📋 Copy Code</button>
+<h3>📐 Layout</h3>
+<label><input type="checkbox" value="navbar"> Navbar</label><br>
+<label><input type="checkbox" value="sidebar"> Sidebar</label><br>
 
-  <hr>
+<h3>💰 Business</h3>
+<label><input type="checkbox" value="pricing"> Pricing Card</label><br>
+<label><input type="checkbox" value="card"> Info Card</label><br>
 
-  <p style="font-size:12px;color:#888">
-    ✨ Pro version coming soon<br>
-    (More components • Tailwind • React)
-  </p>
+<h3>💬 Feedback</h3>
+<label><input type="checkbox" value="modal"> Modal</label><br>
+<label><input type="checkbox" value="toast"> Toast</label><br>
+
+<hr>
+
+<h3>🎛 Style</h3>
+Radius <input type="range" min="5" max="40" value="18" onchange="setVar('--radius',this.value+'px')"><br>
+Distance <input type="range" min="5" max="25" value="10" onchange="setVar('--distance',this.value+'px')"><br>
+Blur <input type="range" min="5" max="40" value="20" onchange="setVar('--blur',this.value+'px')"><br>
+
+<hr>
+
+<h3>🎨 Theme</h3>
+<button class="btn" onclick="setTheme('light')">Light</button>
+<button class="btn" onclick="setTheme('dark')">Dark</button>
+
+<hr>
+
+<h4>✨ Pro Themes</h4>
+<button class="btn" onclick="pro()">Blue</button>
+<button class="btn" onclick="pro()">Purple</button>
+<button class="btn" onclick="pro()">Neon</button>
+
+<hr>
+
+<button class="btn" onclick="generate()">⚡ Generate UI</button>
+<button class="btn" onclick="copy()">📋 Copy HTML</button>
+
+<p style="font-size:12px;color:#888">
+✨ Pro: React export / Tailwind / 50+ components
+</p>
+
 </div>
 
 <div class="canvas" id="canvas"></div>
 <div class="code"><pre id="code"></pre></div>
 
 <script>
-const canvas = document.getElementById('canvas');
 
-/* Initial state */
-window.onload = function(){
-  canvas.innerHTML = `
-    <div class="tip">
-      <h2>🎨 Neumorphism UI Generator</h2>
-      <p>Select components → Generate → Copy & Use</p>
-    </div>
-  `;
+/* ===== Theme System ===== */
+
+function setTheme(type){
+
+  const root = document.documentElement;
+
+  const themes = {
+
+    light:{
+      bg:"#e0e5ec",
+      text:"#333",
+      light:"#ffffff",
+      dark:"#a3b1c6",
+      panel:"#ffffff",
+      panelText:"#333",
+      accent:"#6c8cff"
+    },
+
+    dark:{
+      bg:"#1e1e2f",
+      text:"#f1f1f1",
+      light:"#2a2a3d",
+      dark:"#12121a",
+      panel:"#252536",
+      panelText:"#f1f1f1",
+      accent:"#8899ff"
+    }
+
+  };
+
+  const t = themes[type];
+  if(!t) return;
+
+  root.style.setProperty('--bg', t.bg);
+  root.style.setProperty('--text', t.text);
+  root.style.setProperty('--light', t.light);
+  root.style.setProperty('--dark', t.dark);
+  root.style.setProperty('--panel-bg', t.panel);
+  root.style.setProperty('--panel-text', t.panelText);
+  root.style.setProperty('--accent', t.accent);
+
+  localStorage.setItem("theme", type);
 }
 
-/* Components */
+window.onload = function(){
+  const saved = localStorage.getItem("theme") || "light";
+  setTheme(saved);
+};
+
+/* ===== Pro lock ===== */
+
+function pro(){
+  alert("✨ Pro feature\nUnlock premium themes");
+}
+
+/* ===== Style ===== */
+
+function setVar(k,v){
+  document.documentElement.style.setProperty(k,v);
+}
+
+/* ===== Components ===== */
 
 function login(){
 return `<div class="module">
 <h2>Login</h2>
-<input class="input" placeholder="Username" />
-<input class="input" placeholder="Password" type="password" />
+<input class="input" placeholder="Email">
+<input class="input" placeholder="Password">
 <button class="btn">Login</button>
 </div>`;
 }
 
 function register(){
 return `<div class="module">
-<h2>Create Account</h2>
-<input class="input" placeholder="Username" />
-<input class="input" placeholder="Email" />
-<input class="input" placeholder="Password" type="password" />
-<input class="input" placeholder="Confirm Password" type="password" />
+<h2>Register</h2>
+<input class="input" placeholder="Email">
+<input class="input" placeholder="Password">
 <button class="btn">Sign Up</button>
 </div>`;
 }
 
-function dashboard(){
+function search(){
 return `<div class="module">
-<div class="card"><b>Users</b><br>1,200</div>
-<div class="card"><b>Revenue</b><br>$8,200</div>
+<input class="input" placeholder="Search...">
 </div>`;
 }
 
-/* Generate */
-function generatePage(){
-  let selected = document.querySelectorAll('input[type=checkbox]:checked');
-  let html='';
+function navbar(){
+return `<div class="module">Navbar</div>`;
+}
 
-  if(selected.length===0){
-    canvas.innerHTML = `<div class="tip"><p>⚠️ Please select at least one component</p></div>`;
-    return;
-  }
+function sidebar(){
+return `<div class="module">Sidebar</div>`;
+}
+
+function pricing(){
+return `<div class="module">
+<h3>$9/mo</h3>
+<button class="btn">Buy Now</button>
+</div>`;
+}
+
+function card(){
+return `<div class="module">Info Card</div>`;
+}
+
+function modal(){
+return `<div class="module">Modal Example</div>`;
+}
+
+function toast(){
+return `<div class="module">Toast Message</div>`;
+}
+
+/* ===== Generate ===== */
+
+const canvas = document.getElementById('canvas');
+
+function generate(){
+  let selected=document.querySelectorAll('input:checked');
+  let html='';
 
   canvas.innerHTML='';
 
   selected.forEach(i=>{
-    if(i.value==='login'){canvas.innerHTML+=login(); html+=login();}
-    if(i.value==='register'){canvas.innerHTML+=register(); html+=register();}
-    if(i.value==='dashboard'){canvas.innerHTML+=dashboard(); html+=dashboard();}
+    let fn=window[i.value];
+    if(fn){
+      let block=fn();
+      canvas.innerHTML+=block;
+      html+=block;
+    }
   });
 
-  document.getElementById('code').innerText = html;
+  output(html);
 }
 
-/* Copy */
-function copyCode(){
+function output(inner){
+const full = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Generated UI</title>
+<style>
+body{background:var(--bg);font-family:Arial;display:flex;flex-wrap:wrap;gap:20px;padding:40px;}
+</style>
+</head>
+<body>
+${inner}
+</body>
+</html>
+`;
+document.getElementById('code').innerText = full;
+}
+
+function copy(){
   navigator.clipboard.writeText(document.getElementById('code').innerText);
-
-  const msg=document.createElement('div');
-  msg.innerText='✅ Copied!';
-  msg.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:20px;';
-  document.body.appendChild(msg);
-  setTimeout(()=>msg.remove(),1500);
+  alert('Copied!');
 }
 
-/* Back */
 function back(){
-  window.location.href="./index.html";
+  window.location.href='./index.html';
 }
+
 </script>
 
 </body>
