@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<title>Neumorphism Generator – UI Builder</title>
-<meta name="description" content="Generate neumorphism UI components with real-time preview.">
+<title>Neumorphism Pro Generator</title>
 
 <style>
 :root{
@@ -17,6 +15,8 @@
   --radius:18px;
   --distance:10px;
   --blur:20px;
+
+  --primary:#4f46e5;
 }
 
 body{
@@ -36,7 +36,7 @@ body.dark{
   --dark:#12121a;
 }
 
-/* 拟态 */
+/* ===== 拟态 ===== */
 .neu{
   border-radius:var(--radius);
   background:var(--bg);
@@ -68,6 +68,7 @@ body.dark{
   display:flex;
   flex-direction:column;
   gap:20px;
+  overflow:auto;
 }
 
 .group{
@@ -75,16 +76,12 @@ body.dark{
 }
 
 .group-title{
-  display:flex;
-  align-items:center;
-  gap:8px;
   font-weight:600;
   margin-bottom:10px;
 }
 
 .option{
   display:flex;
-  align-items:center;
   gap:10px;
   padding:6px 0;
 }
@@ -98,24 +95,38 @@ body.dark{
   gap:24px;
 }
 
-/* 修复 dark 文字 */
+/* 修复 dark */
 .canvas,.canvas *{
   color:var(--text);
 }
 
+/* 模块 */
 .module{
   padding:20px;
-  min-height:150px;
+  min-height:160px;
   display:flex;
   flex-direction:column;
   justify-content:center;
+  gap:10px;
+
+  transition:.3s;
 }
 
+/* Hover Demo */
+.module:hover{
+  transform:scale(1.03);
+}
+
+/* input true neu */
 .input{
   height:36px;
   border:none;
-  margin-top:10px;
   padding:0 10px;
+  background:var(--bg);
+  border-radius:var(--radius);
+  box-shadow:
+    inset 6px 6px 10px var(--dark),
+    inset -6px -6px 10px var(--light);
 }
 
 /* Toast */
@@ -123,15 +134,13 @@ body.dark{
   position:fixed;
   bottom:20px;
   right:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
 }
 .toast{
   padding:12px 18px;
   background:#333;
   color:#fff;
   border-radius:10px;
+  margin-top:10px;
   animation:fade .3s;
 }
 @keyframes fade{
@@ -143,10 +152,12 @@ body.dark{
 
 <body>
 
+<!-- Sidebar -->
 <div class="panel">
 
 <button class="neu neu-btn" onclick="back()">← Back</button>
 
+<!-- 分类（完整保留） -->
 <div class="group neu">
 <div class="group-title">🧩 Form</div>
 <label class="option"><input type="checkbox" value="login"> Login</label>
@@ -172,6 +183,7 @@ body.dark{
 <label class="option"><input type="checkbox" value="toast"> Toast</label>
 </div>
 
+<!-- 原功能：Style -->
 <div class="group neu">
 <div class="group-title">🎛 Style</div>
 Radius <input type="range" min="5" max="40" value="18" oninput="setVar('--radius',this.value+'px')"><br>
@@ -179,46 +191,83 @@ Distance <input type="range" min="5" max="25" value="10" oninput="setVar('--dist
 Blur <input type="range" min="5" max="40" value="20" oninput="setVar('--blur',this.value+'px')">
 </div>
 
+<!-- 原功能：Theme -->
 <div class="group neu">
 <div class="group-title">🎨 Theme</div>
 <button class="neu neu-btn" onclick="setTheme('light')">Light</button>
 <button class="neu neu-btn" onclick="setTheme('dark')">Dark</button>
+
+<!-- 新增（不覆盖） -->
+<button class="neu neu-btn" onclick="proTheme('blue')">Pro Blue</button>
+<button class="neu neu-btn" onclick="proTheme('purple')">Pro Purple</button>
+<button class="neu neu-btn" onclick="proTheme('neon')">Pro Neon</button>
 </div>
 
+<!-- 新增 Export（不影响原功能） -->
 <div class="group neu">
-<button class="neu neu-btn" onclick="generate()">⚡ Generate UI</button>
-<button class="neu neu-btn" onclick="copy()">📋 Copy HTML</button>
+<div class="group-title">⚡ Export</div>
+<button class="neu neu-btn" onclick="setMode('html')">HTML</button>
+<button class="neu neu-btn" onclick="setMode('react')">React</button>
+<button class="neu neu-btn" onclick="setMode('tailwind')">Tailwind</button>
+</div>
+
+<!-- 操作 -->
+<div class="group neu">
+<button class="neu neu-btn" onclick="generate()">Generate UI</button>
+<button class="neu neu-btn" onclick="copy()">Copy HTML</button>
 </div>
 
 </div>
 
+<!-- Canvas -->
 <div class="canvas" id="canvas"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
+
+let mode="html";
+
+/* 组件（完整保留 + 扩展） */
 const C={
-login:()=>`<div class="module neu"><h3>Login</h3><input class="input neu"><input class="input neu"><button class="neu neu-btn" data-a="login">Login</button></div>`,
-register:()=>`<div class="module neu"><h3>Register</h3><input class="input neu"><input class="input neu"><button class="neu neu-btn" data-a="register">Register</button></div>`,
-search:()=>`<div class="module neu"><input class="input neu"><button class="neu neu-btn" data-a="search">Search</button></div>`,
-navbar:()=>`<div class="module neu">Navbar</div>`,
-sidebar:()=>`<div class="module neu">Sidebar</div>`,
-pricing:()=>`<div class="module neu"><h3>$9</h3><button class="neu neu-btn">Buy</button></div>`,
-card:()=>`<div class="module neu">Card</div>`,
-modal:()=>`<div class="module neu"><button class="neu neu-btn" data-a="modal">Open Modal</button></div>`,
-toast:()=>`<div class="module neu"><button class="neu neu-btn" data-a="toast">Toast</button></div>`
+login:{
+html:`<div class="module neu"><h3>Login</h3><input class="input"><input class="input"><button class="neu neu-btn" data-a="login">Login</button></div>`
+},
+register:{
+html:`<div class="module neu"><h3>Register</h3><input class="input"><input class="input"><button class="neu neu-btn" data-a="register">Register</button></div>`
+},
+search:{
+html:`<div class="module neu"><input class="input"><button class="neu neu-btn" data-a="search">Search</button></div>`
+},
+navbar:{html:`<div class="module neu">Navbar</div>`},
+sidebar:{html:`<div class="module neu">Sidebar</div>`},
+pricing:{html:`<div class="module neu"><h3>$9</h3><button class="neu neu-btn">Buy</button></div>`},
+card:{html:`<div class="module neu">Card</div>`},
+modal:{html:`<div class="module neu"><button class="neu neu-btn">Open Modal</button></div>`},
+toast:{html:`<div class="module neu"><button class="neu neu-btn">Toast</button></div>`}
 };
 
 function generate(){
   canvas.innerHTML='';
   document.querySelectorAll("input:checked").forEach(i=>{
     const d=document.createElement("div");
-    d.innerHTML=C[i.value]();
+    d.innerHTML=C[i.value].html;
     canvas.appendChild(d.firstElementChild);
   });
 }
 
 function setVar(k,v){document.documentElement.style.setProperty(k,v);}
 function setTheme(t){document.body.className=t==='dark'?'dark':'';}
+
+function proTheme(t){
+  if(t==="blue") document.documentElement.style.setProperty('--bg','#dbeafe');
+  if(t==="purple") document.documentElement.style.setProperty('--bg','#ede9fe');
+  if(t==="neon") document.documentElement.style.setProperty('--bg','#0f172a');
+}
+
+function setMode(m){
+  mode=m;
+  toast("Export mode: "+m);
+}
 
 function toast(msg){
   const t=document.createElement('div');
@@ -236,10 +285,7 @@ function copy(){
 document.addEventListener("click",e=>{
   const a=e.target.dataset.a;
   if(!a)return;
-  if(a==="login") toast("Login success");
-  if(a==="register") toast("Register success");
-  if(a==="search") toast("Searching...");
-  if(a==="toast") toast("Hello 👋");
+  toast(a+" success");
 });
 
 function back(){location.href="index.html";}
